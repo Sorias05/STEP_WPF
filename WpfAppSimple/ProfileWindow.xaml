@@ -10,7 +10,7 @@
         <Label Content="Profile" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="61" Width="224" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" FontWeight="Bold"/>
         <Label Content="Name" HorizontalAlignment="Left" Margin="293,71,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
         <Label Content="Phone" HorizontalAlignment="Left" Margin="293,107,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
-        <Label Content="" HorizontalAlignment="Left" Margin="467,76,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" HorizontalContentAlignment="Right"/>
+        <Label x:Name="lblName" Content="" HorizontalAlignment="Left" Margin="467,76,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" HorizontalContentAlignment="Right"/>
         <Label x:Name="lblPhone" Content="" HorizontalAlignment="Left" Margin="467,107,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" HorizontalContentAlignment="Right"/>
 
     </Grid>

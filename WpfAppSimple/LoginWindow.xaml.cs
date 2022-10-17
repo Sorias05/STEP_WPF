@@ -15,12 +15,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Npgsql;
 
 namespace WpfAppSimple
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public LoginWindow()
@@ -31,9 +29,22 @@ namespace WpfAppSimple
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             MyDataContext myData = new MyDataContext();
-            //SqlCommand cmd = new SqlCommand("select * from Userlogins where UserName=@UserName and Password =@Password", myData);
             UserEntity user = new UserEntity();
-            myData.SaveChanges();
+            user = myData.Users.FirstOrDefault(u=>u.Name==txtUserName.Text && u.Password==txtPassword.Text);
+            if (user!=null)
+            {
+                ProfileWindow pw = new ProfileWindow();
+                pw.Show();
+                pw.lblName.Content = user.Name;
+                pw.lblPhone.Content = user.Phone;
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Incorrect User name or Password! Try again!");
+                txtUserName.Text = "";
+                txtPassword.Text = "";
+            }
         }
     }
 }
