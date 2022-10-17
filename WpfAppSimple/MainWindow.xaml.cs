@@ -20,10 +20,7 @@ using LibDatabase.Entities;
 
 namespace WpfAppSimple
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window 
     {
         public static event ConnectionCompleteDelegate _connectionComplete;
         private MyDataContext _myDataContext;
