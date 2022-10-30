@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppSimple"
         mc:Ignorable="d"
-        Title="UsersWindow" Height="450" Width="800">
+        Title="UsersWindow" Height="435" Width="865" MinHeight="435" MinWidth="865">
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0" Width="150">
@@ -13,23 +13,51 @@
             <Button Name="btnEditUser" Margin="20,0" Click="btnEditUser_Click">Змінити</Button>
         </StackPanel>
 
-        <WrapPanel DockPanel.Dock="Bottom">
-            
+        <WrapPanel DockPanel.Dock="Bottom" Margin="10,10,0,10">
+            <Button Name="btnPrev" Content="&lt;&lt;" FontSize="20" Margin="0,0,10,0" Click="btnPrev_Click"/>
+            <Button Name="btnNext" Content=">>" FontSize="20" Margin="0,0,10,0" Click="btnNext_Click"/>
+            <Label Name="labelPage" Content="0/0" Margin="0,0,50,0"/>
+            <Label Name="labelInfo" Content="0/0" Margin="0,0,50,0"/>
+            <Label Name="labelTime" Content="0.0" Margin="0,0,50,0"/>
         </WrapPanel>
 
         <Grid>
-            <DataGrid Name="dgUsers" IsReadOnly="True" AutoGenerateColumns="False">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Canvas>
+                <Button Name="btnSearch" Content="Пошук" Canvas.Left="568" 
+                        Canvas.Top="10" Height="27" Width="62" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" Click="btnSearch_Click" />
+                <Label Content="Ім'я" Canvas.Left="10" Canvas.Top="20"/>
+                <TextBox Canvas.Left="74" Name="txtName"
+                         TextWrapping="Wrap" Text="" Canvas.Top="24" 
+                         Width="120" HorizontalAlignment="Left" 
+                         VerticalAlignment="Center"/>
+            </Canvas>
+
+            <DataGrid Name="dgUsers" IsReadOnly="True" AutoGenerateColumns="False" Grid.Row="1">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageFilePath}" Width="32" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Ім'я" Binding="{Binding Name}" 
-                                    MinWidth="250" Width="Auto"/>
+                                    MinWidth="250" Width="Auto" FontSize="20"/>
                     <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" 
-                                    MinWidth="150" Width="Auto"/>
+                                    MinWidth="150" Width="Auto" FontSize="20"/>
                     <DataGridTextColumn Header="Дата створення" Binding="{Binding DateCreated}" 
-                                    MinWidth="200" Width="Auto"/>
+                                    MinWidth="200" Width="Auto" FontSize="20"/>
                 </DataGrid.Columns>
 
             </DataGrid>
         </Grid>
     </DockPanel>
-    
+
 </Window>

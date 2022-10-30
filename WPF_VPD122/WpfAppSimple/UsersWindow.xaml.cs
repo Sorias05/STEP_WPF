@@ -1,10 +1,14 @@
 ﻿using LibDatabase;
+using LibDatabase.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WpfAppSimple.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WpfAppSimple
 {
@@ -25,31 +30,56 @@ namespace WpfAppSimple
     {
         private ObservableCollection<UserVM> users = new ObservableCollection<UserVM>();
         private readonly MyDataContext _myDataContext;
+        int? page;
+        const int pageSize = 10;
+        int totalCount = 0;
+        int totalPages = 0;
         public UsersWindow(MyDataContext myDataContext)
         {
             _myDataContext = myDataContext;
             InitializeComponent();
-            InitDataGrid();
+            //InitDataGrid();
         }
-        private void InitDataGrid()
+        private async Task InitDataGrid(IQueryable<UserEntity> query)
         {
             var cultureInfo = new CultureInfo("uk-UA");
-            var users = _myDataContext.Users
+            int threadId = Thread.CurrentThread.ManagedThreadId;
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            totalCount = query.Count();
+            totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            int skip = (page ?? 0) * pageSize;
+            var users = await query
                 .OrderBy(x => x.Id)
-                .Select(x=>new UserVM
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Phone = x.Phone,
-                DateCreated = x.DateCreated!=null ? 
-                    x.DateCreated.Value.ToString("dd MMMM yyyy HH:mm:ss", cultureInfo) :""
-            }).ToList();
-            
-            //users.Add(new UserVM
-            //{
-            //    Name="Іван Петрович",
-            //    Phone="+38097 347 8382"
-            //});
+                .Select(x => new UserVM
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Phone = x.Phone,
+                    DateCreated = x.DateCreated != null ?
+                    x.DateCreated.Value.ToString("dd MMMM yyyy HH:mm:ss", cultureInfo) : "",
+                    Image=x.Image ?? "noimage.png"
+                })
+                .Skip((page ?? 0)*pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            //MessageBox.Show("RunTime " + elapsedTime);
+
+            labelTime.Content = "Runtime " + elapsedTime;
+            labelInfo.Content = $"{skip}-{skip+pageSize}/{totalCount}";
+            labelPage.Content = $"{(page ?? 0) + 1}/{totalPages}";
+
+            threadId = Thread.CurrentThread.ManagedThreadId;
+
             dgUsers.ItemsSource = users;
         }
 
@@ -79,6 +109,48 @@ namespace WpfAppSimple
                     }
                     //userVM.Name = "Оновили користувача :)";
                 }
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            var query = ReadDataSearch();
+            InitDataGrid(query);
+
+        }
+
+        private IQueryable<UserEntity> ReadDataSearch()
+        {
+            var query = _myDataContext.Users.AsQueryable();
+            SearchUser search = new SearchUser();
+            search.Name = txtName.Text;
+            if (!string.IsNullOrEmpty(search.Name))
+            {
+                query = query.Where(x => x.Name.Contains(search.Name));
+            }
+            int count = query.Count();
+            return query;
+        }
+
+        private void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            int p = (page ?? 0);
+            if (p == 0)
+                return;
+            page=--p;
+
+            var query = ReadDataSearch();
+            InitDataGrid(query);
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            int p = (page ?? 0);
+            if (p >= totalPages)
+                return;
+            page=++p;
+
+            var query = ReadDataSearch();
+            InitDataGrid(query);
         }
     }
 }

@@ -1,3 +1,4 @@
 {
-  "ConnectionDB": "Server=localhost;Port=5432;Database=wpfdata;User Id=postgres;Password=123456;"
+  "ConnectionDB": "Server=localhost;Port=5432;Database=wpfdata;User Id=postgres;Password=S97532b3;",
+  "FolderSaveImages":  "images"
 }
