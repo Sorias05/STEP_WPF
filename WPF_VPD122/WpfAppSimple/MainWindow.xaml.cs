@@ -1,9 +1,13 @@
-﻿using LibDatabase;
+﻿using Bogus;
+using LibDatabase;
+using LibDatabase.Delegates;
+using LibDatabase.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,17 +18,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Threading;
-using LibDatabase.Delegates;
-using LibDatabase.Entities;
 
 namespace WpfAppSimple
 {
-    public partial class MainWindow : Window 
+    class MyImage
     {
-        public static event ConnectionCompleteDelegate _connectionComplete;
+        public string Name { get; set; }
+    }
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public event ConnectionCompleteDelegate _connectionComplete;
         private MyDataContext _myDataContext;
-        private CancellationTokenSource ctSource;
+        private CancellationTokenSource ctSourse;
         private CancellationToken token;
 
         private static ManualResetEvent _mre = new ManualResetEvent(false);
@@ -33,23 +41,32 @@ namespace WpfAppSimple
         {
             InitializeComponent();
             _connectionComplete += MainWindow__connectionComplete;
-            Thread thread = new Thread(ConnectionDatabase);
+            Thread thread = new Thread(ConnnectionDatabase);
             thread.Start();
-            
+
+            var faker = new Faker<MyImage>()
+                    //Use an enum outside scope.
+                    .RuleFor(u => u.Name, f => f.Image.LoremFlickrUrl());
+            var img = faker.Generate();
         }
+
+
         private void MainWindow__connectionComplete(MyDataContext context)
         {
             _myDataContext = context;
             Dispatcher.Invoke(() =>
             {
-                lblStatusBar.Content = "The connection is successful";
+                lblStatusBar.Content = "Підлкючення успішно виконанно!";
             });
+            //
         }
-        private void ConnectionDatabase()
+
+        private void ConnnectionDatabase()
         {
-            _myDataContext = new MyDataContext();
-            _connectionComplete?.Invoke(_myDataContext);
+            MyDataContext myDataContext = new MyDataContext();
+            _connectionComplete?.Invoke(myDataContext);
         }
+
         private void mFileExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -67,19 +84,19 @@ namespace WpfAppSimple
             window.ShowDialog();
         }
 
-        private void bntAddUsers_Click(object sender, RoutedEventArgs e)
+        private void btnAddUsers_Click(object sender, RoutedEventArgs e)
         {
             int count = int.Parse(txtCount.Text);
             pbCount.Minimum = 0;
             pbCount.Maximum = count;
-            ctSource = new CancellationTokenSource();
-            token = ctSource.Token;
+            ctSourse = new CancellationTokenSource();
+            token = ctSourse.Token;
             Task thread = new Task(()=>AddUsers(count), token);
             thread.Start();
 
             _mre.Set();
+            
         }
-
         private void AddUsers(object count)
         {
             int countAdd = (int)(count);
@@ -88,46 +105,53 @@ namespace WpfAppSimple
                 _myDataContext.Users.Add(new UserEntity
                 {
                     Name = "Іван",
-                    Phone = "0938783232",
-                    Password = "88888888"
+                    Phone = "983 d9s9d 88s8",
+                    Password = "123456",
+                    DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 });
                 _myDataContext.SaveChanges();
                 Dispatcher.Invoke(() =>
                 {
                     pbCount.Value = i;
-                    lblStatusBar.Content = $"Adding users: {i+1}/{count}";
+                    lblStatusBar.Content = $"{i+1}/{count}";
                 });
                 _mre.WaitOne(Timeout.Infinite);
-                if(token.IsCancellationRequested)
+                if (token.IsCancellationRequested)
                 {
                     Dispatcher.Invoke(() =>
                     {
                         pbCount.Value = 0;
-                        lblStatusBar.Content = $"Adding cancelled.";
+                        lblStatusBar.Content = $"Додавання відмінено {i+1}/{count}";
                     });
                     return;
-                }  
+                }
             }
         }
 
-        private void bntCancel_Click(object sender, RoutedEventArgs e)
+        private void btnCansel_Click(object sender, RoutedEventArgs e)
         {
-            ctSource.Cancel();
+            ctSourse.Cancel();
         }
 
-        private void bntPause_Click(object sender, RoutedEventArgs e)
+        private void btnPause_Click(object sender, RoutedEventArgs e)
         {
-            if(_isPause)
+            if(_isPause) //Якщо потік був залочений
             {
                 _mre.Set();
-                bntPause.Content = "Pause";
+                btnPause.Content = "Пауза";
             }
             else
             {
-                _mre.Reset();
-                bntPause.Content = "Continue";
+                _mre.Reset(); //Лочимо потік
+                btnPause.Content = "Відновити";
             }
             _isPause = !_isPause;
+        }
+
+        private void mActionUsers_Click(object sender, RoutedEventArgs e)
+        {
+            UsersWindow usersWindow = new UsersWindow(_myDataContext);
+            usersWindow.ShowDialog();
         }
     }
 }

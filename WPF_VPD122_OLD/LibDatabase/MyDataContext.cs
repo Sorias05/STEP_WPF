@@ -1,5 +1,6 @@
 ﻿using LibDatabase.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,14 @@ namespace LibDatabase
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=wpfdata;User Id=postgres;Password=S97532b3;");
+            var configBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appconfig.json");
+            var config = configBuilder.Build();
+            var dbConnection = config.GetSection("ConnectionDB").Value;
+
+            optionsBuilder.UseNpgsql(dbConnection);
+            //optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=wpfdata;User Id=postgres;Password=S97532b3;");
         }
     }
 }

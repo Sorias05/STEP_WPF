@@ -1,0 +1,34 @@
+﻿<Window x:Class="WpfAppSimple.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppSimple"
+        mc:Ignorable="d"
+        Title="Головне вікно" Height="450" Width="818">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Вихід" Name="mFileExit" Click="mFileExit_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="Дії">
+                <MenuItem Header="Реєстрація" Name="mActionRegister" Click="mActionRegister_Click" />
+                <MenuItem Header="Вхід" Name="mActionLogin" Click="mActionLogin_Click" />
+                <MenuItem Header="Користувачі" Name="mActionUsers" Click="mActionUsers_Click" />
+            </MenuItem>
+            <MenuItem Header="Допомога"/>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom" >
+            <Label Name="lblStatusBar" Content="Форма запцщена" Foreground="Green" />
+        </StatusBar>
+        <Grid>
+            <Button Name="bntConnection" Content="Додати користувачів" Click="btnAddUsers_Click" Margin="0,72,118,0" Height="54" VerticalAlignment="Top" HorizontalAlignment="Right" Width="195" />
+            <Button Name="btnCansel" Content="Відміна" Margin="0,160,578,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="165" Click="btnCansel_Click" />
+            <Button Name="btnPause" Content="Пауза" Margin="0,160,378,0" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="165" Click="btnPause_Click" />
+
+            <TextBox x:Name="txtCount" HorizontalAlignment="Left" Margin="156,84,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="200" FontSize="16" Height="30"/>
+            <ProgressBar Name="pbCount" HorizontalAlignment="Left" Height="20" Margin="31,0,0,23" VerticalAlignment="Bottom" Width="724"/>
+        </Grid>
+    </DockPanel>
+</Window>

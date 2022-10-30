@@ -1,0 +1,3 @@
+{
+  "ConnectionDB": "Server=localhost;Port=5432;Database=wpfdata;User Id=postgres;Password=123456;"
+}

@@ -17,6 +17,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Bogus" Version="34.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,6 +28,12 @@
   <ItemGroup>
     <Resource Include="6p.jpg" />
     <Resource Include="register-now.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
