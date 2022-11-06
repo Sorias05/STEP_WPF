@@ -10,7 +10,8 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0" Width="150">
             <Button Name="btnAddUser" Margin="20,10" Click="btnAddUser_Click">Додати</Button>
-            <Button Name="btnEditUser" Margin="20,0" Click="btnEditUser_Click">Змінити</Button>
+            <Button Name="btnEditUser" Margin="20,10" Click="btnEditUser_Click">Змінити</Button>
+            <Button Name="btnDeleteUser" Margin="20,10" Click="btnDeleteUser_Click">Видалити</Button>
         </StackPanel>
 
         <WrapPanel DockPanel.Dock="Bottom" Margin="10,10,0,10">
@@ -37,6 +38,7 @@
                          TextWrapping="Wrap" Text="" Canvas.Top="24" 
                          Width="120" HorizontalAlignment="Left" 
                          VerticalAlignment="Center"/>
+                <CheckBox x:Name="cbIsImage" Content="Тільки з фото" Canvas.Left="10" Canvas.Top="51" Checked="CheckBox_Checked"/>
             </Canvas>
 
             <DataGrid Name="dgUsers" IsReadOnly="True" AutoGenerateColumns="False" Grid.Row="1">

@@ -1,11 +1,13 @@
 ﻿using LibDatabase;
 using LibDatabase.Entities;
+using LibDatabase.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,6 +36,7 @@ namespace WpfAppSimple
         const int pageSize = 10;
         int totalCount = 0;
         int totalPages = 0;
+        
         public UsersWindow(MyDataContext myDataContext)
         {
             _myDataContext = myDataContext;
@@ -95,19 +98,21 @@ namespace WpfAppSimple
 
         private void btnEditUser_Click(object sender, RoutedEventArgs e)
         {
-            if(dgUsers.SelectedItem != null)
+            
+            if (dgUsers.SelectedItem != null)
                 if(dgUsers.SelectedItem is UserVM)
                 {
                     var userVM = (UserVM)dgUsers.SelectedItem;
                     var user = _myDataContext.Users.SingleOrDefault(x => x.Id == userVM.Id);
-                    if(user != null)
-                    {
-                        user.Name = "Оновили користувача :)";
-                        _myDataContext.Users.Update(user);
-                        _myDataContext.SaveChanges();
-                        userVM.Name = user.Name;
-                    }
-                    //userVM.Name = "Оновили користувача :)";
+                    EditUserWindow pw = new EditUserWindow(_myDataContext, user);
+                    pw.Show();
+                    pw.txtName.Text = user.Name;
+                    pw.txtPhone.Text = user.Phone;
+                    pw.txtPassword.Text = user.Password;
+                    pw.txtBitmap.Text = user.Image;
+                    string src = string.IsNullOrEmpty(user.Image) ? "noimage.png" : $"600_{user.Image}";
+                    string url = $"{MyAppConfig.GetSectionValue("FolderSaveImages")}/{src}";
+                    pw.imgPhoto.Source = UserVM.toBitmap(File.ReadAllBytes(url));
                 }
         }
 
@@ -128,6 +133,8 @@ namespace WpfAppSimple
                 query = query.Where(x => x.Name.Contains(search.Name));
             }
             int count = query.Count();
+            if(cbIsImage.IsChecked == true)
+                query = query.Where(x => x.Image!=null);
             return query;
         }
 
@@ -151,6 +158,16 @@ namespace WpfAppSimple
 
             var query = ReadDataSearch();
             InitDataGrid(query);
+        }
+
+        private void btnDeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

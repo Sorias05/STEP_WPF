@@ -35,7 +35,8 @@ namespace WpfAppSimple.Models
         {
             get
             {
-                string url = $"{MyAppConfig.GetSectionValue("FolderSaveImages")}/{Image}";
+                string src = Image == "noimage.png" ? Image : $"32_{Image}";
+                string url = $"{MyAppConfig.GetSectionValue("FolderSaveImages")}/{src}";
                 return toBitmap(File.ReadAllBytes(url));
             }
         }

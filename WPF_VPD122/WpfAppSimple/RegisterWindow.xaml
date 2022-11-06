@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppSimple"
         mc:Ignorable="d"
-          Title="Реєстрація" Height="300" Width="520" MinHeight="300" MinWidth="520">
+          Title="Реєстрація" Height="360" Width="600" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" />
@@ -21,11 +21,15 @@
             <Label Content="Пароль" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" />
             <PasswordBox x:Name="txtPassword" FontSize="14" Height="20"/>
 
+            <Label Content="Стать" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" />
+            <ComboBox x:Name="cmbGender" Height="20" FontSize="11" />
+
             <Label Content="Фото профілю" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" />
             <Button x:Name="btnAddImage" Content="Завантажити фото" Click="btnAddImage_Click" Width="120" HorizontalAlignment="Left"/>
+            <Label x:Name="lblError" Content="" FontStyle="Italic" Foreground="Red" Height="25" />
 
-            <Button Name="btnRegister" Content="Реєстрація" Margin="20,15,10,0" Click="Button_Click" />
+            <Button Name="btnRegister" Content="Реєстрація" Margin="20,0,10,0" Click="Button_Click" />
         </StackPanel>
-        <Image Grid.Column="0" Name="imgPhoto" Source="{Binding ImageFilePath}" />
+        <Image Grid.Column="0" Name="imgPhoto" Source="register-now.jpg" />
     </Grid>
 </Window>
