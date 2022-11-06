@@ -75,7 +75,7 @@ namespace WpfAppSimple
 
         private void mActionRegister_Click(object sender, RoutedEventArgs e)
         {
-            RegisterWindow window = new RegisterWindow();
+            RegisterWindow window = new RegisterWindow(_myDataContext);
             window.ShowDialog();
         }
 

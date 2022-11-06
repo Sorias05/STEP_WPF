@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppSimple"
         mc:Ignorable="d"
-          Title="Реєстрація" Height="280" Width="518">
+          Title="Реєстрація" Height="300" Width="520" MinHeight="300" MinWidth="520">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Margin="10,20,10,0">
+        <StackPanel Grid.Column="1" Margin="10,10,10,10">
             <Label Content="Ім'я користувача" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" />
             <TextBox x:Name="txtUserName" TextWrapping="Wrap" FontSize="14" Height="20"/>
 
@@ -19,10 +19,13 @@
             <TextBox x:Name="txtPhone" TextWrapping="Wrap" FontSize="14" Height="20"/>
 
             <Label Content="Пароль" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" />
-            <TextBox x:Name="txtPassword" TextWrapping="Wrap" FontSize="14" Height="20"/>
+            <PasswordBox x:Name="txtPassword" FontSize="14" Height="20"/>
 
-            <Button Content="Реєстрація" Margin="20,15,10,0" />
+            <Label Content="Фото профілю" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Height="28" />
+            <Button x:Name="btnAddImage" Content="Завантажити фото" Click="btnAddImage_Click" Width="120" HorizontalAlignment="Left"/>
+
+            <Button Name="btnRegister" Content="Реєстрація" Margin="20,15,10,0" Click="Button_Click" />
         </StackPanel>
-        <Image Grid.Column="0" Source="/register-now.jpg" />
+        <Image Grid.Column="0" Name="imgPhoto" Source="{Binding ImageFilePath}" />
     </Grid>
 </Window>
