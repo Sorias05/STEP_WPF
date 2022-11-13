@@ -23,6 +23,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppSimple.ProductAction;
 using BogusGender = Bogus.DataSets.Name.Gender;
 
 namespace WpfAppSimple
@@ -175,6 +176,18 @@ namespace WpfAppSimple
         {
             UsersWindow usersWindow = new UsersWindow(_myDataContext);
             usersWindow.ShowDialog();
+        }
+
+        private void mActionSelectImage_Click(object sender, RoutedEventArgs e)
+        {
+            SaveImageWindow siw = new SaveImageWindow();
+            siw.ShowDialog();
+        }
+
+        private void mActionProducts_Click(object sender, RoutedEventArgs e)
+        {
+            ProductForm pf = new ProductForm();
+            pf.ShowDialog();
         }
     }
 }

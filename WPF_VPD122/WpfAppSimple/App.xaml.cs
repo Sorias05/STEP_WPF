@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using LibDatabase.Helpers;
+using Application = System.Windows.Application;
 
 namespace WpfAppSimple
 {

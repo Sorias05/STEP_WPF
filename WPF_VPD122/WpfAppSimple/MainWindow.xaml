@@ -16,6 +16,8 @@
                 <MenuItem Header="Реєстрація" Name="mActionRegister" Click="mActionRegister_Click" />
                 <MenuItem Header="Вхід" Name="mActionLogin" Click="mActionLogin_Click" />
                 <MenuItem Header="Користувачі" Name="mActionUsers" Click="mActionUsers_Click" />
+                <MenuItem Header="Продукти" Name="mActionProducts" Click="mActionProducts_Click" />
+                <MenuItem Header="Вибрати фото" Name="mActionSelectImage" Click="mActionSelectImage_Click" />
             </MenuItem>
             <MenuItem Header="Допомога"/>
         </Menu>

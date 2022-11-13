@@ -25,6 +25,7 @@ using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 using System.Drawing.Imaging;
 using System.Drawing;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace WpfAppSimple
 {
@@ -85,7 +86,7 @@ namespace WpfAppSimple
             dlg.Filter = "Image files (*.PNG;*.JPG;*.GIF)|*.PNG;*.JPG;*.GIF|All Files (*.*)|*.*";
             dlg.RestoreDirectory = true;
 
-            if (dlg.ShowDialog() == true)      
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)      
             {
                 source = Path.GetFileName(dlg.FileName);
                 filePath = dlg.FileName;

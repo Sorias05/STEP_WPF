@@ -88,12 +88,8 @@ namespace WpfAppSimple
 
         private void btnAddUser_Click(object sender, RoutedEventArgs e)
         {
-            users.Add(new UserVM
-            {
-                //Id = 1,
-                Name="Матрос",
-                Phone="3883 s8d8d8 asdljf 883883"
-            });
+            RegisterWindow rw = new RegisterWindow(_myDataContext);
+            rw.Show();
         }
 
         private void btnEditUser_Click(object sender, RoutedEventArgs e)
@@ -104,7 +100,7 @@ namespace WpfAppSimple
                 {
                     var userVM = (UserVM)dgUsers.SelectedItem;
                     var user = _myDataContext.Users.SingleOrDefault(x => x.Id == userVM.Id);
-                    EditUserWindow pw = new EditUserWindow(_myDataContext, user);
+                    EditUserWindow pw = new EditUserWindow(_myDataContext, userVM.Id);
                     pw.Show();
                     pw.txtName.Text = user.Name;
                     pw.txtPhone.Text = user.Phone;
@@ -118,6 +114,7 @@ namespace WpfAppSimple
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            page = 0;
             var query = ReadDataSearch();
             InitDataGrid(query);
 
@@ -152,7 +149,7 @@ namespace WpfAppSimple
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             int p = (page ?? 0);
-            if (p >= totalPages)
+            if (p >= totalPages-1)
                 return;
             page=++p;
 

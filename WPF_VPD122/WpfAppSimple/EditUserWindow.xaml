@@ -14,6 +14,7 @@
         <TextBox x:Name="txtBitmap" Text="Bitmap" Margin="380,156,52,0" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="txtPassword" Text="Password" Margin="260,124,52,0" VerticalAlignment="Top" FontSize="18"/>
         <Button Name="btnImage" Content="Load new image" HorizontalAlignment="Left" Margin="260,155,0,0" VerticalAlignment="Top" FontSize="14" Width="115" Click="btnImage_Click"/>
-        <Button Name="btnEdit" Content="Edit user" Margin="260,183,52,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Click="btnEdit_Click"/>
+        <Button Name="btnEdit" Content="Edit user" Margin="260,204,52,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Click="btnEdit_Click"/>
+        <Label x:Name="lblError" Content="" HorizontalAlignment="Left" Margin="262,178,0,0" VerticalAlignment="Top" Foreground="Red"/>
     </Grid>
 </Window>
